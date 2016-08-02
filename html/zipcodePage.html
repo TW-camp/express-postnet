@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zipcodePage</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+
+<div>
+    1. Translate zip code to bar code<br>
+    2. Translate bar code to zip code<br>
+    3. Quit<br>
+    Please input your choices(1~3);<br>
+    <input type="text" id="menu" placeholder="请输入您的选项">
+    <input type="submit" value="确定" id="btn1">
+</div>
+
+<div id="input" >
+    <input type="text" id="zipcode" name="zipcode" placeholder="请输入邮编">
+    <input type="submit" value="转码" id="btn2">
+    <div id="div1"></div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#input").hide();
+        $("#btn1").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:3000/index",
+                async: true,
+                data: "menu="+$('#menu').val(),
+                success: function (result) {
+                    if(result){
+                        $("#input").show();
+                    }
+                },
+                error: function (xhr) {
+                    alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                }
+            })
+        })
+        $("#btn2").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:3000/translator",
+                async: true,
+                data: "zipcode=" + $('#zipcode').val(),
+                success: function (result) {
+                    $("#div1").html(result);
+                },
+                error: function (xhr) {
+                    alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                }
+            })
+        })
+    })
+</script>
+
+</body>
+</html>
